@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import AppInputTextField from '../screens/components/AppInputTextFelsds';
+import AppInputTextField from '../screens/components/AppInputTextFelids';
 import CustomButton from '../screens/components/buttons/CustomAppButton';
 import TextButton from '../screens/components/buttons/TextButton';
 

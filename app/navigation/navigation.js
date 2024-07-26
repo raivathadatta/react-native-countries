@@ -15,6 +15,8 @@ import {StyleSheet} from 'react-native';
 import SettingScreen from '../screens/SettingScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import SplashScreen from '../screens/SplashScreen';
+import CustomDrawer from './CustomDrawer';
+import WebAppPage from '../screens/WebAppPage';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -26,7 +28,7 @@ export default function MyStack() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
-        <MyDrawer />
+        <InitialStack />
       </NavigationContainer>
     </GestureHandlerRootView>
   );
@@ -34,8 +36,13 @@ export default function MyStack() {
 
 function MyDrawer() {
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="HomeTabs" component={InitialStack} />
+    <Drawer.Navigator
+      screenOptions={{
+        activeTintColor: '#e91e63',
+        itemStyle: {marginVertical: 5},
+      }}
+      drawerContent={props => <CustomDrawer {...props} />}>
+      <Drawer.Screen name="HomeTabs" component={HomeScreen} />
       <Drawer.Screen name="Settings" component={SettingScreen} />
     </Drawer.Navigator>
   );
@@ -67,7 +74,7 @@ function InitialStack() {
         />
         <Stack.Screen
           name="Home"
-          component={HomeScreen}
+          component={MyDrawer}
           options={{
             title: 'Countries',
           }}
@@ -85,6 +92,7 @@ function InitialStack() {
           options={{presentation: 'modal'}}
         />
         <Stack.Screen name="detail" component={DetailsScreen} />
+        <Stack.Screen name="webPage" component={WebAppPage} />
       </Stack.Navigator>
     </>
   );
