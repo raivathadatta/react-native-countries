@@ -29,7 +29,7 @@ const DetailsScreen = ({navigation}) => {
             onPress={() => {
               console.log(item);
               dispatch(setSelectedCounter(item));
-              navigation.push('detail');
+              navigation.replace('detail');
             }}
           />
         ))}

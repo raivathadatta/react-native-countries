@@ -3,7 +3,6 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   countries: [],
   selectedCountry: {},
-  searchQuery: [],
 };
 
 const countrySlice = createSlice({
@@ -16,9 +15,6 @@ const countrySlice = createSlice({
     setSelectedCounter: (state, action) => {
       state.selectedCountry = getCountryDetails(state, action.payload);
     },
-    setSearchCountries: (state, action) => {
-      state.searchQuery = setFilterData(state, action.payload);
-    },
   },
 });
 
@@ -29,10 +25,16 @@ const getCountryDetails = (state, countryCCA3) => {
   return state.countries.find(country => country.cca3 === countryCCA3);
 };
 
-const setFilterData = (state, value) => {
-  return state.countries.filter(country =>
-    country.name.common.toLowerCase().includes(value.toLowerCase()),
-  );
-};
+// const setFilterData = (state, value) => {
+//   console.log(value);
+//   if (value.length < 1) {
+//     return state.countries;
+//   }
+//   const data = state.countries.filter(country =>
+//     country.name.common.toLowerCase().includes(value.toLowerCase()),
+//   );
+//   console.log(data);
+//   return data;
+// };
 
 export default countrySlice.reducer;

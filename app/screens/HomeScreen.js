@@ -1,41 +1,45 @@
+/// add filter function in slicer and add inout color to black and back ground color
 import {Text, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {requestUserPermission} from '../../firebaseConfig';
+import {getFcmToken, requestUserPermission} from '../../firebaseConfig';
 import '../../pushNotificationConfig';
 import CountryCard from './components/Card/CounterCard';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  setSelectedCounter,
-  setSearchCountries,
-} from '../data/appredux/countrySlice';
+import {setSelectedCounter} from '../data/appredux/countrySlice';
 import AppInputTextFelid from './components/AppInputTextFelsds';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
-  const homeState = useSelector(state => state.country);
+  const data = useSelector(state => state.country.countries);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState(homeState.countries);
+  const [filteredData, setFilteredData] = useState(data);
 
   useEffect(() => {
     requestUserPermission();
+    getFcmToken();
   }, []);
+
+  useEffect(() => {
+    setFilteredData(
+      data.filter(country =>
+        country.name.common.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    );
+  }, [searchQuery, data]);
+
   const onClick = item => {
     dispatch(setSelectedCounter(item.cca3));
     navigation.navigate('detail');
   };
-  const onChangeText = value => {
-    setSearchQuery(value);
-    setFilteredData(homeState.searchQuery);
-    dispatch(setSearchCountries(value));
-    // setFilteredData()
-  };
+
   return (
     <>
       <View style={styles.searchContainer}>
         <AppInputTextFelid
+          style={styles.searchInput}
           placeholder="Search countries..."
           value={searchQuery}
-          onChangeText={onChangeText}
+          onChangeText={setSearchQuery}
         />
       </View>
       <ScrollView contentContainerStyle={styles.container}>
@@ -64,6 +68,13 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#f5f5f5',
   },
+  searchInput: {
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
   container: {
     flexGrow: 1,
     padding: 16,
@@ -74,24 +85,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-//       {/* <ScrollView>
-//       <View style={{height: '400px'}}>
-//         <ScrollView horizontal key="horizontal">
-//           {data.map((country, index) => {
-//             return (
-//               <>
-//                 <CountryCard
-//                   key={index}
-//                   cardKey={country.name.common}
-//                   imageUrl={country.flags.png}
-//                   name={country.name.common}
-//                   population={country.population}
-//                   region={country.region}
-//                   onPress={() => onClick(country)}
-//                 />
-//               </>
-//             );
-//           })}
-//         </ScrollView>
-//       </View> */}

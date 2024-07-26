@@ -1,12 +1,17 @@
 import {View, TextInput, StyleSheet} from 'react-native';
 import React from 'react';
 
-export default function AppInputTextFelid({value, onChangeText, ...props}) {
+export default function AppInputTextFelid({
+  value,
+  onChangeText,
+  extendedStyle,
+  ...props
+}) {
   return (
     <View style={style.container}>
       <TextInput
         placeholderTextColor="#000"
-        style={style.inputText}
+        style={{...style.inputText, ...extendedStyle}}
         value={value}
         onChangeText={onChangeText}
         {...props}

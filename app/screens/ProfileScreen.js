@@ -13,7 +13,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import ActionSheet from 'react-native-actions-sheet';
 import Geolocation from 'react-native-geolocation-service';
-import axios from 'axios';
+import {fetchAddress} from '../data/getApiCalls';
 
 const ProfileScreen = ({navigation}) => {
   const [user, setUser] = useState(null);
@@ -54,7 +54,7 @@ const ProfileScreen = ({navigation}) => {
     Geolocation.getCurrentPosition(
       position => {
         setLocation(position);
-        fetchAddress(position.coords.latitude, position.coords.longitude);
+        fetchLocation(position.coords.latitude, position.coords.longitude);
       },
       error => {
         console.log(error.code, error.message);
@@ -64,7 +64,7 @@ const ProfileScreen = ({navigation}) => {
     );
   };
 
-  const fetchAddress = async (latitude, longitude) => {
+  const fetchLocation = async (latitude, longitude) => {
     try {
       const response = await fetchAddress(latitude, longitude);
 
@@ -79,7 +79,11 @@ const ProfileScreen = ({navigation}) => {
   const handleSignOut = async () => {
     try {
       await auth().signOut();
-      navigation.navigate('Home');
+      // navigation.reset('Loading');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Loading'}],
+      });
     } catch (error) {
       console.error(error);
     }
