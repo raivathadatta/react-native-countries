@@ -10,9 +10,8 @@ import auth from '@react-native-firebase/auth';
 import fetchCountriesData from '../data/getApiCalls';
 import {useDispatch} from 'react-redux';
 import {setCountries} from '../data/appredux/countrySlice';
-import {getFcmToken, setupNotificationListeners} from '../../firebaseConfig';
 
-export default function SlashScreen({navigation}) {
+export default function SplashScreen({navigation}) {
   function onAuthStateChanged(user) {
     setTimeout(() => {
       if (!user) {
